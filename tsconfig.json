@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "ES5",                     // Target JavaScript version
+        "module": "ESNext",                     // Module system
+        "declaration": true,                    // Generate declaration files
+        "declarationDir": "./dist/types",       // Output for declaration files
+        "outDir": "./dist",                     // Output directory for compiled files
+        "moduleResolution": "node",            // Resolve modules in Node.js style
+        "strict": true,                         // Enable all strict type checks
+        "esModuleInterop": true,               // Allow default imports from CommonJS
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "lib": ["dom", "es2015"],                  // Skip type checks of declaration files
+    },
+    "include": ["src/**/*"],                   // Files to include
+    "exclude": ["node_modules", "dist"]        // Files to exclude
+}
