@@ -3,7 +3,7 @@
 
 ## Installation
 ```bash
-npm install video-processing-framework
+npm install mes-engine
 ```
 
 ## Features
