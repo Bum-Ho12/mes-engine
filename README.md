@@ -6,6 +6,13 @@
 npm install mes-engine
 ```
 
+> **Note**: If you plan to use other engines besides `FFmpegEngine`, you may need to install them separately.
+
+For example, to install the `FFmpeg` engine:
+```bash
+npm install ffmpeg-static
+```
+
 ## Features
 - Video processing and streaming
 - Multiple quality levels
@@ -46,7 +53,14 @@ class CustomCache extends CacheStrategy {
 ```
 
 ## Documentation
-See [docs/](./docs) for detailed documentation. also good documentation for the usage and meaning of each component is welcomed
+See [docs/](./docs) for detailed documentation. Also, good documentation for the usage and meaning of each component is welcomed.
+
+## Engines Support
+Currently, the following video engines are available:
+- **FFmpegEngine**: Uses `ffmpeg` for video processing. You need to install `ffmpeg-static` or another FFmpeg binary to use this engine.
+- **Custom Engines**: You can implement your own engine by extending the `VideoEngine` class.
+
+For more details on engine implementation, see the [Engines](./docs/engines.md) page.
 
 ## Test Cases
 
