@@ -1,6 +1,6 @@
 {
   "name": "mes-engine",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "mes-engine is a video processing engine that handles video chunking, processing and other video high density and intensive processing and caching processes.",
   "keywords": [
     "mes",
