@@ -31,11 +31,11 @@ npm install gstreamer     # For GStreamer engine
 ### Basic Usage
 
 ```typescript
-import { 
-  VideoProcessor, 
-  FFmpegEngine, 
-  FileSystemStorage, 
-  InternalCache 
+import {
+  VideoProcessor,
+  FFmpegEngine,
+  FileSystemStorage,
+  InternalCache
 } from 'mes-engine';
 
 // Initialize processor
