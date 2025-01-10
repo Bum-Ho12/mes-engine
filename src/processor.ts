@@ -1,4 +1,5 @@
-// VideoProcessor.ts
+
+// processor.ts
 import { VideoEngine } from './core/VideoEngine';
 import { EventEmitter } from 'events';
 import { StorageProvider } from './storage/StorageProvider';
@@ -11,7 +12,6 @@ import { VideoEvent } from './core/events';
 
 export class VideoProcessor extends EventEmitter {
     private engine: VideoEngine;
-    private storage: StorageProvider;
     private streamManager: StreamManager;
     private config: VideoConfig;
 
@@ -22,7 +22,6 @@ export class VideoProcessor extends EventEmitter {
     ) {
         super();
         this.engine = engine;
-        this.storage = storage;
         this.streamManager = new StreamManager(storage);
         this.config = config;
     }

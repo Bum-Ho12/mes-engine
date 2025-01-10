@@ -1,3 +1,4 @@
+
 // cache/CacheStrategy.ts
 export interface CacheOptions {
     maxSize: number;

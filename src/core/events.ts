@@ -1,3 +1,4 @@
+
 export enum VideoEvent {
     CHUNK_PROCESSED = 'chunkProcessed',
     QUALITY_PROCESSED = 'qualityProcessed',

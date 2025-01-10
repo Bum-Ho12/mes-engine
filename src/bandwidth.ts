@@ -1,3 +1,4 @@
+
 // bandwidth.ts
 class BandwidthDetector {
     private samples: Array<[number, number]> = [];

@@ -1,3 +1,4 @@
+
 // core/types.ts
 
 export interface VideoConfig {

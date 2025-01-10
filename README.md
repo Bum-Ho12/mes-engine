@@ -1,3 +1,4 @@
+
 # Video Processing Framework
 
 ## Installation
@@ -45,4 +46,126 @@ class CustomCache extends CacheStrategy {
 ```
 
 ## Documentation
-See [docs/](./docs) for detailed documentation.
+See [docs/](./docs) for detailed documentation. also good documentation for the usage and meaning of each component is welcomed
+
+## Test Cases
+
+### Modular Engine System
+```typescript
+describe('Modular Engine System', () => {
+  it('should work with FFmpegEngine', async () => {
+    const engine = new FFmpegEngine();
+    const storage = new FileSystemStorage();
+    const processor = new VideoProcessor(engine, storage, testConfig);
+    expect(processor).to.be.instanceOf(VideoProcessor);
+  });
+
+  it('should work with CustomVideoEngine', async () => {
+    const engine = new CustomVideoEngine();
+    const storage = new FileSystemStorage();
+    const processor = new VideoProcessor(engine, storage, testConfig);
+    expect(processor).to.be.instanceOf(VideoProcessor);
+  });
+});
+```
+
+### Abstract Storage Providers
+```typescript
+describe('Abstract Storage Providers', () => {
+  it('should work with FileSystemStorage', async () => {
+    const engine = new CustomVideoEngine();
+    const storage = new FileSystemStorage();
+    const processor = new VideoProcessor(engine, storage, testConfig);
+    expect(processor).to.be.instanceOf(VideoProcessor);
+  });
+
+  it('should work with CustomStorageProvider', async () => {
+    const engine = new CustomVideoEngine();
+    const storage = new CustomStorageProvider();
+    const processor = new VideoProcessor(engine, storage, testConfig);
+    expect(processor).to.be.instanceOf(VideoProcessor);
+  });
+});
+```
+
+### Stream Management
+```typescript
+describe('Stream Management', () => {
+  it('should create readable stream for chunk', async () => {
+    const engine = new CustomVideoEngine();
+    const storage = new CustomStorageProvider();
+    const processor = new VideoProcessor(engine, storage, testConfig);
+    const chunkPath = join(testConfig.cacheDir, videoId, `${quality}p`, `chunk_${chunkNumber}.mp4`);
+    await storage.saveChunk(chunkPath, chunkData);
+    const manifest = await processor.processVideo('test-video.mp4');
+    const stream = await processor.streamChunk(manifest.videoId, 720, 0);
+    expect(stream).to.be.instanceOf(Readable);
+    const data = await new Promise<Buffer>((resolve, reject) => {
+      const chunks: Buffer[] = [];
+      stream.on('data', (chunk) => chunks.push(chunk));
+      stream.on('end', () => resolve(Buffer.concat(chunks)));
+      stream.on('error', reject);
+    });
+    expect(data.toString()).to.equal(chunkData.toString());
+    expect(stream).to.be.instanceOf(Readable);
+  });
+});
+```
+
+### Event System
+```typescript
+describe('Event System', () => {
+  it('should emit events during processing', async () => {
+    const engine = new CustomVideoEngine();
+    const storage = new CustomStorageProvider();
+    const processor = new VideoProcessor(engine, storage, testConfig);
+    const events: string[] = [];
+    processor.on(VideoEvent.CHUNK_PROCESSED, () => events.push('chunk'));
+    processor.on(VideoEvent.QUALITY_PROCESSED, () => events.push('quality'));
+    processor.on(VideoEvent.PROCESSING_COMPLETE, () => events.push('complete'));
+    await processor.processVideo('test-video.mp4');
+    expect(events).to.include('chunk');
+    expect(events).to.include('quality');
+    expect(events).to.include('complete');
+  });
+});
+```
+
+### Configurable Quality Levels
+```typescript
+describe('Configurable Quality Levels', () => {
+  it('should process video in configured quality levels', async () => {
+    const engine = new CustomVideoEngine();
+    const storage = new CustomStorageProvider();
+    const processor = new VideoProcessor(engine, storage, testConfig);
+    const manifest = await processor.processVideo('test-video.mp4');
+    expect(manifest.qualities).to.deep.equal(testConfig.defaultQualities);
+    expect(manifest.chunks).to.have.length.greaterThan(0);
+    const qualities = new Set(manifest.chunks.map(chunk => chunk.quality));
+    expect(qualities.size).to.equal(testConfig.defaultQualities.length);
+  });
+});
+```
+
+### TypeScript Interfaces
+```typescript
+describe('TypeScript Interfaces', () => {
+  it('should validate type safety of configuration', () => {
+    const config: VideoConfig = {
+      chunkSize: 10,
+      cacheDir: './test-cache',
+      maxCacheSize: 1024 * 1024 * 100,
+      defaultQualities: [
+        { height: 720, bitrate: '2000k' }
+      ]
+    };
+    expect(config).to.have.all.keys([
+      'chunkSize',
+      'cacheDir',
+      'maxCacheSize',
+      'defaultQualities'
+    ]);
+  });
+});
+```
+

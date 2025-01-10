@@ -1,30 +1,32 @@
+
 // cache/LRU.ts
 export class LRU<T> {
-    private cache: Map<string, T>;
     private maxSize: number;
+    private cache: Map<string, T>;
 
     constructor(maxSize: number) {
-        this.cache = new Map();
         this.maxSize = maxSize;
-    }
-
-    get(key: string): T | undefined {
-        const value = this.cache.get(key);
-        if (value) {
-            this.cache.delete(key);
-            this.cache.set(key, value);
-        }
-        return value;
+        this.cache = new Map();
     }
 
     set(key: string, value: T): void {
-        if (this.cache.size >= this.maxSize) {
-            const firstKey = this.cache.keys().next().value;
-            if (firstKey !== undefined) {
-                this.cache.delete(firstKey);
+        if (this.cache.has(key)) {
+            this.cache.delete(key);
+        } else if (this.cache.size >= this.maxSize) {
+            const oldestKey = this.cache.keys().next().value;
+            if (oldestKey !== undefined) {
+                this.cache.delete(oldestKey);
             }
         }
         this.cache.set(key, value);
+    }
+
+    get(key: string): T | undefined {
+        if (!this.cache.has(key)) return undefined;
+        const value = this.cache.get(key)!;
+        this.cache.delete(key);
+        this.cache.set(key, value);
+        return value;
     }
 
     clear(): void {

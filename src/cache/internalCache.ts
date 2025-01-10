@@ -1,4 +1,5 @@
-// cache/InternalCache.ts
+
+// cache/internalCache.ts
 import { LRU } from './LRU';
 import { CacheStrategy, CacheOptions } from './cacheStrategy';
 import { StorageProvider } from '../storage/StorageProvider';
