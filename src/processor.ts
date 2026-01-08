@@ -1,5 +1,4 @@
-
-// processor.ts
+// src/processor.ts
 import { VideoEngine } from './core/VideoEngine';
 import { EventEmitter } from 'events';
 import { StorageProvider } from './storage/StorageProvider';

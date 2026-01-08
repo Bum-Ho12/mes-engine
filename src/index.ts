@@ -1,4 +1,4 @@
-// index.ts
+// src/index.ts
 export * from './core/types';
 export * from './core/events';
 export * from './core/VideoEngine';

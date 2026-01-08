@@ -1,6 +1,4 @@
-
-
-// storage/FileSystemStorage.ts
+// src/storage/FileSystemStorage.ts
 import { promises as fs } from 'fs';
 import { StorageProvider } from './StorageProvider';
 

@@ -1,5 +1,4 @@
-
-// streaming/StreamManager.ts
+// src/streaming/StreamManager.ts
 import { Readable } from 'stream';
 import { StorageProvider } from '../storage/StorageProvider';
 

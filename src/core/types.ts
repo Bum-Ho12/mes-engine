@@ -1,5 +1,4 @@
-
-// core/types.ts
+// src/core/types.ts
 
 export interface VideoConfig {
     chunkSize: number;
