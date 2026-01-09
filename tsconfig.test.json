@@ -8,9 +8,22 @@
         "skipLibCheck": true,
         "resolveJsonModule": true,
         "outDir": "./dist",
-        "types": ["node", "mocha", "chai"],
-        "lib": ["dom", "es2015"]
+        "types": [
+            "node",
+            "mocha",
+            "chai"
+        ],
+        "lib": [
+            "dom",
+            "es2015"
+        ]
     },
-    "include": ["src/**/*", "tests/**/*"],
-    "exclude": ["node_modules", "dist"]
+    "include": [
+        "src/**/*",
+        "tests/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
 }

@@ -10,5 +10,11 @@ export abstract class VideoEngine extends EventEmitter {
         quality: QualityLevel
     ): Promise<void>;
 
+    abstract extractScreenshot(
+        inputPath: string,
+        outputPath: string,
+        time: number
+    ): Promise<void>;
+
     abstract getDuration(inputPath: string): Promise<number>;
 }

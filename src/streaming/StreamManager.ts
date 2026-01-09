@@ -14,9 +14,9 @@ export class StreamManager {
         const stream = new Readable();
 
         if (range) {
-        stream.push(data.slice(range.start, range.end + 1));
+            stream.push(data.slice(range.start, range.end + 1));
         } else {
-        stream.push(data);
+            stream.push(data);
         }
 
         stream.push(null);

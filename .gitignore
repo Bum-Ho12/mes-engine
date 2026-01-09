@@ -12,3 +12,6 @@ dist/
 # Mac OS X
 .DS_Store
 test-video.mp4
+
+# files
+video.mp4

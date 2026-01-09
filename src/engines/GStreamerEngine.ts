@@ -27,6 +27,29 @@ export class GStreamerEngine extends VideoEngine {
         });
     }
 
+    async extractScreenshot(
+        inputPath: string,
+        outputPath: string,
+        time: number
+    ): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const gst = spawn('gst-launch-1.0', [
+                'filesrc', `location=${inputPath}`,
+                '!', 'decodebin',
+                '!', 'videoconvert',
+                '!', 'videorate',
+                '!', `video/x-raw,framerate=1/1`,
+                '!', 'videocut', `starting-time=${time * 1000000000}`,
+                '!', 'jpegenc',
+                '!', 'filesink', `location=${outputPath}`
+            ]);
+
+            gst.on('close', code => {
+                code === 0 ? resolve() : reject(new Error(`GStreamer screenshot error: ${code}`));
+            });
+        });
+    }
+
     async getDuration(inputPath: string): Promise<number> {
         return new Promise((resolve, reject) => {
             const gst = spawn('gst-launch-1.0', [

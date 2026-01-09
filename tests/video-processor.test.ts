@@ -40,6 +40,17 @@ class CustomVideoEngine extends VideoEngine {
     async getDuration(inputPath: string): Promise<number> {
         return 30; // Mock duration
     }
+
+    async extractScreenshot(
+        inputPath: string,
+        outputPath: string,
+        time: number
+    ): Promise<void> {
+        // Create the directory path for the screenshot if it doesn't exist
+        await fs.mkdir(dirname(outputPath), { recursive: true });
+        // Mock implementation - write an empty file to simulate screenshot
+        await fs.writeFile(outputPath, Buffer.from('mock-screenshot'));
+    }
 }
 
 // Mock implementation of a custom storage provider
