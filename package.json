@@ -18,12 +18,12 @@
   "author": "Bumho Nisubire",
   "main": "dist/index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register 'tests/**/*.test.ts' --timeout 10000",
+    "test": "ts-mocha -p tsconfig.test.json tests/**/*.test.ts --timeout 10000",
     "build": "rollup -c rollup.config.js"
   },
   "dependencies": {
     "@types/node-fetch": "^2.6.12",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.7.0",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
