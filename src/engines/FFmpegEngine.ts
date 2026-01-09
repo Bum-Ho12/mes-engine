@@ -1,7 +1,7 @@
 // src/engines/FFmpegEngine.ts
 import { spawn } from 'child_process';
-import { VideoEngine } from '../core/VideoEngine';
-import { QualityLevel } from '../core/types';
+import { VideoEngine } from '../core/VideoEngine.js';
+import { QualityLevel } from '../core/types.js';
 
 export class FFmpegEngine extends VideoEngine {
     async processChunk(

@@ -1,6 +1,6 @@
 // src/storage/FileSystemStorage.ts
 import { promises as fs } from 'fs';
-import { StorageProvider } from './StorageProvider';
+import { StorageProvider } from './StorageProvider.js';
 
 export class FileSystemStorage extends StorageProvider {
     async saveChunk(chunkPath: string, data: Buffer): Promise<void> {

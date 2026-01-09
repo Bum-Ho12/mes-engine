@@ -1,6 +1,6 @@
 // src/core/VideoEngine.ts
 import { EventEmitter } from 'events';
-import { QualityLevel } from './types';
+import { QualityLevel } from './types.js';
 
 export abstract class VideoEngine extends EventEmitter {
     abstract processChunk(

@@ -1,6 +1,6 @@
 // src/streaming/StreamManager.ts
 import { Readable } from 'stream';
-import { StorageProvider } from '../storage/StorageProvider';
+import { StorageProvider } from '../storage/StorageProvider.js';
 
 export class StreamManager {
     private storage: StorageProvider;
