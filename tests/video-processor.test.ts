@@ -12,6 +12,13 @@ import { VideoEvent } from '../src/core/events';
 
 // Mock implementation of a custom engine to test modularity
 class CustomVideoEngine extends VideoEngine {
+    private storage: StorageProvider;
+
+    constructor(storage: StorageProvider) {
+        super();
+        this.storage = storage;
+    }
+
     async processChunk(
         inputPath: string,
         outputPath: string,
@@ -19,17 +26,15 @@ class CustomVideoEngine extends VideoEngine {
         quality: QualityLevel
     ): Promise<void> {
         // Create the directory path for the chunk if it doesn't exist
-        const chunkDir = outputPath.substring(0, outputPath.lastIndexOf('/'));
         await fs.mkdir(dirname(outputPath), { recursive: true });
 
         const chunkData = Buffer.from('test'); // Mock chunk data
 
-        // Mock implementation
+        // Mock implementation - write to file system
         await fs.writeFile(outputPath, chunkData);
 
-        // Save to storage
-        const storage = new CustomStorageProvider();
-        await storage.saveChunk(outputPath, chunkData);
+        // Also save to the shared storage provider
+        await this.storage.saveChunk(outputPath, chunkData);
     }
 
     async getDuration(inputPath: string): Promise<number> {
@@ -84,11 +89,15 @@ describe('Video Processing Framework', () => {
     beforeEach(async () => {
         // Create test cache directory
         await fs.mkdir(testConfig.cacheDir, { recursive: true });
+        // Create a mock test video file so fs.stat() works in generateVideoId
+        await fs.writeFile('test-video.mp4', Buffer.from('mock-video-data'));
     });
 
     afterEach(async () => {
         // Cleanup test cache directory
         await fs.rm(testConfig.cacheDir, { recursive: true, force: true });
+        // Cleanup mock test video file
+        await fs.rm('test-video.mp4', { force: true });
     });
 
     describe('Modular Engine System', () => {
@@ -100,8 +109,8 @@ describe('Video Processing Framework', () => {
         });
 
         it('should work with CustomVideoEngine', async () => {
-            const engine = new CustomVideoEngine();
             const storage = new FileSystemStorage();
+            const engine = new CustomVideoEngine(storage);
             const processor = new VideoProcessor(engine, storage, testConfig);
             expect(processor).to.be.instanceOf(VideoProcessor);
         });
@@ -109,15 +118,15 @@ describe('Video Processing Framework', () => {
 
     describe('Abstract Storage Providers', () => {
         it('should work with FileSystemStorage', async () => {
-            const engine = new CustomVideoEngine();
             const storage = new FileSystemStorage();
+            const engine = new CustomVideoEngine(storage);
             const processor = new VideoProcessor(engine, storage, testConfig);
             expect(processor).to.be.instanceOf(VideoProcessor);
         });
 
         it('should work with CustomStorageProvider', async () => {
-            const engine = new CustomVideoEngine();
             const storage = new CustomStorageProvider();
+            const engine = new CustomVideoEngine(storage);
             const processor = new VideoProcessor(engine, storage, testConfig);
             expect(processor).to.be.instanceOf(VideoProcessor);
         });
@@ -125,8 +134,8 @@ describe('Video Processing Framework', () => {
 
     describe('Stream Management', () => {
         it('should create readable stream for chunk', async () => {
-            const engine = new CustomVideoEngine();
             const storage = new CustomStorageProvider();
+            const engine = new CustomVideoEngine(storage);
             const processor = new VideoProcessor(engine, storage, testConfig);
 
             // Mock a video file for testing
@@ -174,8 +183,8 @@ describe('Video Processing Framework', () => {
         });
 
         it('should support range requests', async () => {
-            const engine = new CustomVideoEngine();
             const storage = new CustomStorageProvider();
+            const engine = new CustomVideoEngine(storage);
             const processor = new VideoProcessor(engine, storage, testConfig);
 
             const manifest = await processor.processVideo('test-video.mp4');
@@ -191,8 +200,8 @@ describe('Video Processing Framework', () => {
 
     describe('Event System', () => {
         it('should emit events during processing', async () => {
-            const engine = new CustomVideoEngine();
             const storage = new CustomStorageProvider();
+            const engine = new CustomVideoEngine(storage);
             const processor = new VideoProcessor(engine, storage, testConfig);
 
             const events: string[] = [];
@@ -211,8 +220,8 @@ describe('Video Processing Framework', () => {
 
     describe('Configurable Quality Levels', () => {
         it('should process video in configured quality levels', async () => {
-            const engine = new CustomVideoEngine();
             const storage = new CustomStorageProvider();
+            const engine = new CustomVideoEngine(storage);
             const processor = new VideoProcessor(engine, storage, testConfig);
 
             const manifest = await processor.processVideo('test-video.mp4');
