@@ -15,6 +15,8 @@ test-video.mp4
 
 # files
 video.mp4
+input.mp4
 examples/full-demo/backend/uploads/
 examples/full-demo/backend/processed/
 # .env
+output/
