@@ -4,7 +4,7 @@ import { EventEmitter } from 'events';
 import { StorageProvider } from './storage/StorageProvider.js';
 import { StreamManager } from './streaming/StreamManager.js';
 import { VideoConfig, VideoManifest, VideoChunk, ProcessingOptions } from './core/types.js';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import { promises as fs } from 'fs';
 import { Readable } from 'stream';
 import { VideoEvent } from './core/events.js';
@@ -41,10 +41,20 @@ export class VideoProcessor extends EventEmitter {
             }
         };
 
+        // Create base directory structure
+        const baseDir = join(this.config.cacheDir, videoId);
+        const screenshotDir = join(baseDir, 'screenshots');
+        await fs.mkdir(baseDir, { recursive: true });
+        await fs.mkdir(screenshotDir, { recursive: true });
+
         const duration = await this.engine.getDuration(inputPath);
         const chunks = Math.ceil(duration / this.config.chunkSize);
 
         for (const quality of this.config.defaultQualities) {
+            // Create quality-specific directory
+            const qualityDir = join(baseDir, `${quality.height}p`);
+            await fs.mkdir(qualityDir, { recursive: true });
+
             let m3u8Content = '#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-TARGETDURATION:' + this.config.chunkSize + '\n#EXT-X-MEDIA-SEQUENCE:0\n#EXT-X-PLAYLIST-TYPE:VOD\n';
 
             for (let i = 0; i < chunks; i++) {
@@ -91,7 +101,7 @@ export class VideoProcessor extends EventEmitter {
             m3u8Content += '#EXT-X-ENDLIST';
 
             // Save M3U8 for this quality
-            const m3u8Path = join(this.config.cacheDir, videoId, `${quality.height}p`, 'playlist.m3u8');
+            const m3u8Path = join(qualityDir, 'playlist.m3u8');
             await fs.writeFile(m3u8Path, m3u8Content);
 
             this.emit(VideoEvent.QUALITY_PROCESSED, quality);
@@ -103,12 +113,12 @@ export class VideoProcessor extends EventEmitter {
             for (const quality of this.config.defaultQualities) {
                 masterM3u8 += `#EXT-X-STREAM-INF:BANDWIDTH=${quality.bitrate.replace('k', '000')},RESOLUTION=-1x${quality.height}\n${quality.height}p/playlist.m3u8\n`;
             }
-            const masterPath = join(this.config.cacheDir, videoId, 'master.m3u8');
+            const masterPath = join(baseDir, 'master.m3u8');
             await fs.writeFile(masterPath, masterM3u8);
         }
 
         // Save JSON Manifest
-        const manifestPath = join(this.config.cacheDir, videoId, 'manifest.json');
+        const manifestPath = join(baseDir, 'manifest.json');
         await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2));
 
         this.emit(VideoEvent.PROCESSING_COMPLETE, manifest);

@@ -2,6 +2,7 @@ import typescript from '@rollup/plugin-typescript';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import json from '@rollup/plugin-json';
 
 export default {
     input: 'src/index.ts', // Entry point
@@ -13,6 +14,7 @@ export default {
         },
     ],
     plugins: [
+        json(), // Handle JSON imports
         peerDepsExternal(), // Externalize peer dependencies
         nodeResolve(), // Resolve dependencies from node_modules
         commonjs(), // Convert CommonJS to ES6
