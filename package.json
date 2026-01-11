@@ -1,6 +1,6 @@
 {
   "name": "mes-engine",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "type": "module",
   "description": "A powerful and flexible video processing framework for Node.js with support for multiple processing engines, adaptive streaming, and intelligent caching.",
   "keywords": [
