@@ -1,6 +1,6 @@
 // src/core/VideoEngine.ts
 import { EventEmitter } from 'events';
-import { QualityLevel } from './types.js';
+import { QualityLevel } from './types';
 
 /**
  * Base class for video processing engines (e.g., FFmpeg, GStreamer).

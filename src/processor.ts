@@ -1,13 +1,13 @@
 // src/processor.ts
-import { VideoEngine } from './core/VideoEngine.js';
+import { VideoEngine } from './core/VideoEngine';
 import { EventEmitter } from 'events';
-import { StorageProvider } from './storage/StorageProvider.js';
-import { StreamManager } from './streaming/StreamManager.js';
-import { VideoConfig, VideoManifest, VideoChunk, ProcessingOptions } from './core/types.js';
+import { StorageProvider } from './storage/StorageProvider';
+import { StreamManager } from './streaming/StreamManager';
+import { VideoConfig, VideoManifest, VideoChunk, ProcessingOptions } from './core/types';
 import { join, dirname } from 'path';
 import { promises as fs } from 'fs';
 import { Readable } from 'stream';
-import { VideoEvent } from './core/events.js';
+import { VideoEvent } from './core/events';
 
 /**
  * Main orchestrator for video processing.

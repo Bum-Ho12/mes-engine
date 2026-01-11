@@ -1,6 +1,6 @@
 // src/engines/FFmpegEngine.ts
-import { VideoEngine } from '../core/VideoEngine.js';
-import { QualityLevel } from '../core/types.js';
+import { VideoEngine } from '../core/VideoEngine';
+import { QualityLevel } from '../core/types';
 import { spawn } from 'child_process';
 import fs from 'fs';
 import { dirname } from 'path';
