@@ -15,9 +15,9 @@ export class VideoProcessorService {
             new FFmpegEngine(),
             new FileSystemStorage(path.join(__dirname, '../../processed')),
             {
-                chunkSize: 10,
+                chunkSize: 10, // 10 seconds
                 cacheDir: path.join(__dirname, '../../processed'),
-                maxCacheSize: parseInt(process.env.CACHE_SIZE) || 100 * 1024 * 1024,
+                maxCacheSize: parseInt(process.env.CACHE_SIZE) || 100 * 1024 * 1024, // 100MB
                 defaultQualities: [
                     { height: 1080, bitrate: '5000k' },
                     { height: 720, bitrate: '2500k' },
@@ -31,9 +31,8 @@ export class VideoProcessorService {
     }
 
     setupEventListeners() {
-        // The current VideoProcessor doesn't emit 'progress' in the code I saw, 
+        // The current VideoProcessor doesn't emit 'progress',
         // it emits CHUNK_PROCESSED, QUALITY_PROCESSED, etc.
-        // However, I will adapt it to the user's request.
         this.processor.on('chunkProcessed', (data) => {
             console.log('Chunk processed:', data);
         });
@@ -75,8 +74,7 @@ export class VideoProcessorService {
     async getManifest(videoId) {
         // In actual implementation, we'd read from disk or memory.
         // For the demo, let's assume we can fetch it.
-        // The VideoProcessor doesn't have a getManifest method in the provided snippet.
-        // I'll implement a simple read from the processed directory.
+        // The VideoProcessor doesn't have a getManifest method.
         const manifestPath = path.join(__dirname, '../../processed', videoId, 'manifest.json');
         const data = await fs.promises.readFile(manifestPath, 'utf8');
         return JSON.parse(data);

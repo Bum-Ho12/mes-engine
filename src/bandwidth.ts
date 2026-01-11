@@ -1,5 +1,5 @@
-
 // src/bandwidth.ts
+
 class BandwidthDetector {
     private samples: Array<[number, number]> = [];
     private readonly windowSize = 10000; // 10 seconds in ms

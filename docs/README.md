@@ -7,8 +7,11 @@ Comprehensive documentation for the mes-engine video processing framework.
 1. [Getting Started](#getting-started)
 2. [Core Concepts](#core-concepts)
 3. [Components](#components)
-4. [Advanced Usage](#advanced-usage)
-5. [API Reference](#api-reference)
+4. [HLS & Adaptive Streaming](./HLS.md)
+5. [Storage Providers](./storage.md)
+6. [Caching Strategies](./caching.md)
+7. [Advanced Usage](#advanced-usage)
+8. [API Reference](./API.md)
 
 ## Getting Started
 
@@ -38,7 +41,7 @@ import { VideoProcessor, FFmpegEngine, FileSystemStorage } from 'mes-engine';
 const config = {
   chunkSize: 10,          // seconds
   cacheDir: './cache',
-  maxCacheSize: 1000,     // MB
+  maxCacheSize: 1024 * 1024 * 1024, // 1GB
   defaultQualities: [
     { height: 1080, bitrate: '4000k' },
     { height: 720, bitrate: '2500k' },
@@ -46,11 +49,11 @@ const config = {
   ]
 };
 
-const processor = new VideoProcessor({
-  engine: new FFmpegEngine(),
-  storage: new FileSystemStorage(),
+const processor = new VideoProcessor(
+  new FFmpegEngine(),
+  new FileSystemStorage(),
   config
-});
+);
 ```
 
 ## Core Concepts

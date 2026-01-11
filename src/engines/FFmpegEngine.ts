@@ -5,7 +5,20 @@ import { spawn } from 'child_process';
 import fs from 'fs';
 import { dirname } from 'path';
 
+/**
+ * FFmpeg implementation of the VideoEngine.
+ * Requires `ffmpeg` and `ffprobe` to be installed on the system path.
+ */
 export class FFmpegEngine extends VideoEngine {
+    /**
+     * Processes a chunk of video using FFmpeg.
+     *
+     * @param inputPath - The path to the input video file.
+     * @param outputPath - The path where the processed video chunk will be saved.
+     * @param startTime - The start time (in seconds) of the chunk to process.
+     * @param quality - The desired quality level for the output video.
+     * @returns A Promise that resolves when the chunk is processed, or rejects on error.
+     */
     async processChunk(
         inputPath: string,
         outputPath: string,
@@ -35,9 +48,9 @@ export class FFmpegEngine extends VideoEngine {
             ];
 
             const ffmpegProcess = spawn('ffmpeg', args);
-            
+
             let stderr = '';
-            
+
             ffmpegProcess.stderr.on('data', (data) => {
                 stderr += data.toString();
             });

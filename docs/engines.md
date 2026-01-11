@@ -47,6 +47,10 @@ class CustomVideoEngine extends VideoEngine {
     // Implement custom duration calculation logic here
     return 120; // Example
   }
+
+  async extractScreenshot(inputPath: string, outputPath: string, time: number): Promise<void> {
+    // Implement custom screenshot extraction logic here
+  }
 }
 ```
 

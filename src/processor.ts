@@ -9,6 +9,10 @@ import { promises as fs } from 'fs';
 import { Readable } from 'stream';
 import { VideoEvent } from './core/events.js';
 
+/**
+ * Main orchestrator for video processing.
+ * Handles chunking, transcoding (via engines), and manifest generation.
+ */
 export class VideoProcessor extends EventEmitter {
     private engine: VideoEngine;
     private streamManager: StreamManager;
@@ -25,6 +29,15 @@ export class VideoProcessor extends EventEmitter {
         this.config = config;
     }
 
+    /**
+     * Processes an input video file into multiple quality levels and chunks.
+     * Generates HLS playlists and a JSON manifest.
+     * 
+     * @param inputPath - Absolute path to the source video file
+     * @param options - Optional metadata and processing instructions
+     * @returns Promise resolving to the generated VideoManifest
+     * @throws Error if processing fails at any stage
+     */
     async processVideo(
         inputPath: string,
         options?: ProcessingOptions
@@ -125,6 +138,16 @@ export class VideoProcessor extends EventEmitter {
         return manifest;
     }
 
+    /**
+     * Creates a readable stream for a specific video chunk.
+     * Supported for on-demand delivery of processed segments.
+     * 
+     * @param videoId - ID of the processed video
+     * @param quality - Target quality (height)
+     * @param chunkNumber - Sequential index of the chunk
+     * @param range - Optional byte range for partial content
+     * @returns Promise resolving to a Readable stream
+     */
     async streamChunk(
         videoId: string,
         quality: number,

@@ -7,13 +7,13 @@ A powerful and flexible video processing framework for Node.js with support for 
 
 ## Features
 
-- 🎥 Multiple video processing engines (FFmpeg, GStreamer)
-- 🔄 Adaptive streaming with quality switching
-- 📦 Chunk-based processing for efficient streaming
-- 💾 Flexible storage providers
-- 🚀 Built-in caching strategies (internal/external)
-- 📡 Event-driven architecture
-- 🔌 Extensible plugin system
+- 🎥 **Multiple Video Engines**: FFmpeg and GStreamer support.
+- 🔄 **Adaptive Streaming**: Automatic HLS (`.m3u8`) manifest generation with master and quality playlists.
+- 📦 **Chunk-based Processing**: Parallelizable video chunking for efficient delivery.
+- 📸 **Screenshot Extraction**: Automatic thumbnail generation for every video chunk.
+- 💾 **Flexible Storage**: Abstract storage layer supporting local filesystem and easily extensible to S3/Cloud storage.
+- 🚀 **Intelligent Caching**: Built-in strategies for preloading and caching video segments.
+- 📡 **Event-driven**: Comprehensive event system for monitoring processing progress.
 
 ## Quick Start
 
@@ -21,11 +21,6 @@ A powerful and flexible video processing framework for Node.js with support for 
 
 ```bash
 npm install mes-engine
-
-# Install required engine
-npm install ffmpeg-static  # For FFmpeg engine
-# or
-npm install gstreamer     # For GStreamer engine
 ```
 
 ### Basic Usage
@@ -34,31 +29,44 @@ npm install gstreamer     # For GStreamer engine
 import {
   VideoProcessor,
   FFmpegEngine,
-  FileSystemStorage,
-  InternalCache
+  FileSystemStorage
 } from 'mes-engine';
 
-// Initialize processor
-const processor = new VideoProcessor({
-  engine: new FFmpegEngine(),
-  storage: new FileSystemStorage(),
-  cache: new InternalCache({
-    maxSize: 1024 * 1024 * 100, // 100MB
-    ttl: 3600,
-    preloadNextChunk: true
-  })
+// 1. Initialize Storage and Engine
+const storage = new FileSystemStorage();
+const engine = new FFmpegEngine();
+
+// 2. Setup Configuration
+const config = {
+  chunkSize: 10, // seconds
+  cacheDir: './output',
+  maxCacheSize: 1024 * 1024 * 1024, // 1GB
+  defaultQualities: [
+    { height: 720, bitrate: '2500k' },
+    { height: 1080, bitrate: '5000k' }
+  ]
+};
+
+// 3. Initialize Processor
+const processor = new VideoProcessor(engine, storage, config);
+
+// 4. Listen for Progress
+processor.on('chunk_processed', (event) => {
+  console.log(`Processed ${event.quality.height}p chunk ${event.chunkNumber}`);
 });
 
-// Process video
-const manifest = await processor.processVideo('input.mp4');
+// 5. Process Video
+const manifest = await processor.processVideo('input.mp4', {
+  title: 'My Awesome Video',
+  overallDescription: 'A high-quality adaptive stream.'
+});
 
-// Stream video chunk
-const stream = await processor.streamChunk(
-  manifest.videoId,
-  720, // quality
-  0    // chunk number
-);
+console.log('Master Playlist:', manifest.hls?.masterPlaylist);
 ```
+
+### Examples
+- **[Simple Usage](./examples/simple-usage)**: Minimal setup to get started quickly.
+- **[Full Demo](./examples/full-demo)**: A complete React + Node.js application.
 
 ## Documentation
 
@@ -66,6 +74,7 @@ Full documentation is available in the [docs directory](./docs).
 
 ### Key Topics:
 - [Getting Started](./docs/getting-started.md)
+- [Adaptive Streaming (HLS)](./docs/HLS.md)
 - [Video Engines](./docs/engines.md)
 - [Storage Providers](./docs/storage.md)
 - [Caching Strategies](./docs/caching.md)
