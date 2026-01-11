@@ -73,12 +73,11 @@ console.log('Master Playlist:', manifest.hls?.masterPlaylist);
 Full documentation is available in the [docs directory](./docs).
 
 ### Key Topics:
-- [Getting Started](./docs/getting-started.md)
-- [Adaptive Streaming (HLS)](./docs/HLS.md)
-- [Video Engines](./docs/engines.md)
-- [Storage Providers](./docs/storage.md)
-- [Caching Strategies](./docs/caching.md)
-- [API Reference](./docs/api.md)
+- [Adaptive Streaming (HLS)](https://github.com/Bum-Ho12/mes-engine/blob/main/docs/HLS.md)
+- [Video Engines](https://github.com/Bum-Ho12/mes-engine/blob/main/docs/engines.md)
+- [Storage Providers](https://github.com/Bum-Ho12/mes-engine/blob/main/docs/storage.md)
+- [Caching Strategies](https://github.com/Bum-Ho12/mes-engine/blob/main/docs/caching.md)
+- [API Reference](https://github.com/Bum-Ho12/mes-engine/blob/main/docs/API.md)
 
 ## Supported Engines
 

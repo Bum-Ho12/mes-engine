@@ -7,11 +7,11 @@ Comprehensive documentation for the mes-engine video processing framework.
 1. [Getting Started](#getting-started)
 2. [Core Concepts](#core-concepts)
 3. [Components](#components)
-4. [HLS & Adaptive Streaming](./HLS.md)
-5. [Storage Providers](./storage.md)
-6. [Caching Strategies](./caching.md)
+4. [HLS & Adaptive Streaming](https://github.com/Bum-Ho12/mes-engine/blob/main/docs/HLS.md)
+5. [Storage Providers](https://github.com/Bum-Ho12/mes-engine/blob/main/docs/storage.md)
+6. [Caching Strategies](https://github.com/Bum-Ho12/mes-engine/blob/main/docs/caching.md)
 7. [Advanced Usage](#advanced-usage)
-8. [API Reference](./API.md)
+8. [API Reference](https://github.com/Bum-Ho12/mes-engine/blob/main/docs/API.md)
 
 ## Getting Started
 
